@@ -49,6 +49,7 @@ def main():
 	print("Uploading the results to Elastic Search...")
 	logging.info("==========Preparing to upload data to Elastic Search Instance==========")
 	es_upload = ElasticSearchUpload()
+	es_upload.elastic_search_query()
 	logging.info("==========Data uploaded to Elastic Search Instance==========")
 	print("Elastic Search upload completed")
 	print("Plotting graph for the analyses. The graph can be found in the plot_data folder.")

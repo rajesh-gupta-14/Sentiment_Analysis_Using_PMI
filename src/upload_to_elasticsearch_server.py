@@ -41,7 +41,16 @@ class ElasticSearchUpload:
 	def read_json_data(self):
 		logging.info("Reading the JSON data from file: {}".format(COMBINED_ANALYSIS_JSON))
 		with open(COMBINED_ANALYSIS_JSON,'r') as f:
-			analysis_results = json.load(f)
+			temp_analysis_results = json.load(f)
+		analysis_results=[]
+		for result in temp_analysis_results:
+			dict_object = {}
+			dict_object["tweet"] = result["raw_tweet"]
+			dict_object["basic_avg_sentiment_score"] = result["basic_avg_sentiment_score"]
+			dict_object["basic_avg_sentiment"] = result["basic_avg_sentiment"]
+			dict_object["pmi_sentiment_score"] = str(result["pmi_sentiment_score"])
+			dict_object["pmi_sentiment"] = result["pmi_sentiment"]
+			analysis_results.append(dict_object)
 		return analysis_results
 
 	def create_index(self, es):
@@ -89,4 +98,35 @@ class ElasticSearchUpload:
 		# Write the JSON data into a JSON objects and upload onto the server
 		self.create_json_objects(es, analysis_results)
 
+		logging.info("============Elastic Search upload concluded============")
+		
+	def elastic_search_query(self):
+		# Querying elastic search instance
+		es = Elasticsearch(ES_INSTANCE, port=PORT, http_auth=AUTH_CREDENTIALS)
+		
+		# To get positive tweets in Basic Avg Analysis
+		res = es.search(index="sentiment_analysis", doc_type="tweets_analysis", body={"query": {"match": {"basic_avg_sentiment": "positive"}}}, size=1000)
+		print("{} documents found".format(res['hits']['total']))
+		for doc in res['hits']['hits']:
+			print("{} {}".format(doc['_id'], doc['_source']['tweet']))
+
+		# To get negative tweets in Basic Avg Analysis
+		res = es.search(index="sentiment_analysis", doc_type="tweets_analysis", body={"query": {"match": {"basic_avg_sentiment": "negative"}}}, size=1000)
+		print("{} documents found".format(res['hits']['total']))
+		for doc in res['hits']['hits']:
+			print("{} {}".format(doc['_id'], doc['_source']['tweet']))
+			
+		# To get positive tweets in PMI Analysis
+		res = es.search(index="sentiment_analysis", doc_type="tweets_analysis", body={"query": {"match": {"pmi_sentiment": "positive"}}}, size=1000)
+		print("{} documents found".format(res['hits']['total']))
+		for doc in res['hits']['hits']:
+			print("{} {}".format(doc['_id'], doc['_source']['tweet']))
+			
+		# To get positive tweets in PMI Analysis
+		res = es.search(index="sentiment_analysis", doc_type="tweets_analysis", body={"query": {"match": {"pmi_sentiment": "positive"}}}, size=1000)
+		print("{} documents found".format(res['hits']['total']))
+		for doc in res['hits']['hits']:
+			print("{} {}".format(doc['_id'], doc['_source']['tweet']))
+			
 		logging.info("============Elastic Search operations concluded============")
+
