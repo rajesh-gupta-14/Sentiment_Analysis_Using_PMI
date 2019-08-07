@@ -1,4 +1,4 @@
-# sentimet-analysis-using-lexicon
+# sentiment-analysis-using-lexicon
 
 Subject: Data Warehousing
 Assignment: 2
