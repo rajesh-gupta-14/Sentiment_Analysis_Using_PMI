@@ -1,6 +1,8 @@
 # sentiment-analysis-using-lexicon
 
-Subject: Data Warehousing
-Assignment: 2
+### This repository contains the code used to implement a sentiment analyzer using a lexicon.
 
-This repository contains the code used to implement a sentiment analyzer using a lexicon. 
+## Algorithms Used:
+
+- Basic Average Algorithm (No. of positive words > No. of negative words ? Positive : Negative)
+- Pointwise Mutual Information
