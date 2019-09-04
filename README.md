@@ -1,4 +1,4 @@
-# sentimet-analysis-using-lexicon #
+# Sentiment Analysis of Tweets using PMI #
 
 ## Authors: ##
 * Rajesh Gupta - rajesh.gupta@dal.ca
